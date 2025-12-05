@@ -1,0 +1,30 @@
+<!--
+This is where the main application will live
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+
+
+</head>
+
+
+<body>
+<form method="POST">
+    {% csrf_token %}
+    <label for="paycheck">Paycheck:</label>
+    <input type="text" name="paycheck" id="paycheck">
+    <button type="submit" name="action" value="submit">Submit</button>
+    <p>How much you'll save: {{ to_savings }}</p>
+    <p>How much you can spend: {{ free_money }}</p>
+    <p>Gas: {{ gas }}</p>
+    <p><a href="/logout/">Logout</a></p>
+    <p><a href="/expenses/">Add Expenses</a></p>
+</form>
+
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+<!--
+This is where new users will be able to create their accounts.
+Parameters:
+Username (check if exists())
+Password (user.set_password(), check at least {
+one special character, one upper, one lower, one number
+}
+Email (check validation)
+-->
+
+
+
+<!DOCTYPE html>
+<html>
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Signup Page</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/signup.css' %}">
+
+</head>
+
+<body>
+<h1>Let's Set-up Your Account</h1>
+{% if errors %}
+    <ul class="errors">
+        {% for error in errors %}
+            <li style="color:red;">{{ error }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+
+
+<form method="POST">
+    {% csrf_token %}
+
+    <label for="username">Username:</label><br>
+    <input type="text" id="username" name="username" value="{{ username }}"><br><br>
+
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="email" value="{{ email }}"><br><br>
+
+    <label for="password" class="label-with-tooltip">
+        Password:
+    <span class="info"> ⓘ
+        <span class="popup">
+            Password must include at least:<br>
+            -8 characters<br>
+            -One uppercase and one lowercase letter<br>
+            -One number<br>
+            -One Special Character (e.g. */?+$)<br>
+        </span>
+    </span>
+    </label><br>
+    <input type="password" id="password" name="password"><br>
+
+    <p><a href="/login">Already have an account?</a></p>
+    <button type="submit">Create Account</button>
+
+
+</form>
+
+
+</body>
+
+</html>

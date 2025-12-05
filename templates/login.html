@@ -1,0 +1,41 @@
+<!--
+This is where the user will login in
+Links:
+Forgot your Password?
+New here? Create an account!
+-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+
+</head>
+
+<body>
+<h1>Welcome!</h1>
+
+{% if error %}
+    <p style="color:red;">{{ error }}</p>
+{% endif %}
+<form method = "POST">
+    {% csrf_token %}
+
+    <label for="username">Username:</label><br>
+    <input type="text" id="username" name="username" value="{{ username }} "><br><br>
+
+    <label for="password">Password:</label><br>
+    <input type="password" id="password" name="password"><br>
+
+    <p><a href="/signup">New here? Create an Account</a></p>
+    <p><a href="/recovery/">Forgot your Password?</a></p>
+    <button type="submit">Login</button>
+
+</form>
+
+
+</body>
+
+</html>

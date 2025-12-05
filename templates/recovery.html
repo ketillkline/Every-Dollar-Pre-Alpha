@@ -1,0 +1,47 @@
+<!--
+This page is where the user will enter their username and email after hitting the
+"Forgot you Password?" button on login.html
+After this, they will be directed to reset.html to actually set their new password
+-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Password Recovery</title>
+
+</head>
+
+<body>
+
+<h1>Let's get your account back!</h1>
+<p>We'll do this by resetting your password.<br>First, please
+enter your username and email.</p>
+
+{% if errors %}
+    {% for error in errors %}
+        <li style="color:red;">{{ error }}</li>
+    {% endfor %}
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+    <label for="username">Username:</label><br>
+    <input type="text" id="username" name="username"><br><br>
+
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="email"><br>
+
+    <p><a href="/login/">Remembered your password?</a></p>
+
+    <button type="submit">Reset Password</button>
+
+
+
+</form>
+
+
+</body>
+
+</html>

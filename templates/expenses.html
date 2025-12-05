@@ -1,0 +1,103 @@
+<!--
+This is where the user will add their expenses. Expenses have a name, value, method, frequency, category, and description
+-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Expenses</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/expenses.css' %}">
+
+
+</head>
+
+<body>
+<h1>Let's add some expenses</h1>
+<p>Required fields contain *</p>
+{% if errors %}
+    {% for error in errors %}
+        <p style="color:red;">{{ error }}</p>
+    {% endfor %}
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-grid">
+        <label for="name">Name*</label>
+        <label for="date">Date</label>
+        <label for="value">Value*</label>
+        <label for="method">Method*</label>
+        <label for="frequency">Frequency*</label>
+        <label for="category">Category</label>
+        <label for="description">Description</label><br>
+
+
+        <input type="text" name="name" id="name" value="{{ name }}">
+        <input type="date" name="date" id="date" value="{{ date }}">
+        <input type="text" name="value" id="value" value="{{ value }}">
+        <select name="method" id="method" value="{{ method }}">
+            <option value="">-- select --</option>
+            <option value="Cash">Cash</option>
+            <option value="Credit">Credit</option>
+            <option value="Debit">Debit</option>
+        </select>
+        <select name="frequency" id="frequency" value="{{ frequency }}">
+            <option value="">-- select --</option>
+            <option value="One-Time">One-Time</option>
+            <option value="Daily">Daily</option>
+            <option value="Weekly">Weekly</option>
+            <option value="Bi-Weekly">Bi-Weekly</option>
+            <option value="Monthly">Monthly</option>
+        </select>
+        <input type="text" name="category" id="category" value="{{ category }}">
+        <input type="text" name="description" id="description" value="{{ description }}">
+        <button type="submit" name="action" value="add">Submit</button>
+        <button type="submit" name="action" value="clear_all">Clear All Expenses</button>
+    </div>
+</form>
+
+<h2>Your Expenses</h2>
+<div class="expense-grid">
+    <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Value</th>
+            <th>Method</th>
+            <th>Frequency</th>
+            <th>Category</th>
+            <th>Description</th>
+        </tr>
+        {% for expense in expenses %}
+            <tr>
+                <td>{{ expense.name }}</td>
+                <td>
+                    {% if expense.date %}
+                        {{ expense.date }}
+                    {% else %}
+                        --
+                    {% endif %}
+                </td>
+                <td>{{ expense.value }}</td>
+                <td>{{ expense.method }}</td>
+                <td>{{ expense.frequency }}</td>
+                <td>{{ expense.category }}</td>
+                <td>{{ expense.description }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+</div>
+<p><a href="/">Go back home</a></p>
+
+
+
+
+
+
+</body>
+
+</html>

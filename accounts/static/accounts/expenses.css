@@ -1,0 +1,25 @@
+.form-grid{
+    display: grid;
+    grid-template-columns: repeat(8, 120px);
+    gap: 5px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.form-grid label {
+    align-items: center;
+    font-weight: bold;
+}
+
+.form-grid input, .form-grid select {
+    width: 100px;
+}
+
+.expense-grid{
+    display: grid;
+    grid-template-columns: repeat(7, 120px)
+    gap: 5px;
+    align-items: center;
+    margin-top: 20px;
+}
+

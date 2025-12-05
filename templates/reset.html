@@ -1,0 +1,40 @@
+<!--
+This is the page where the user will actually set their new password
+New Password
+Confirm New Password
+Passwords must contain at least one of each:
+Upper, Lower, Special, Number
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Password Reset</title>
+
+</head>
+
+<body>
+<h1>Let's set your new password!</h1>
+{% if errors %}
+    {% for error in errors %}
+        <li style="color:red;">{{ error }}</li>
+    {% endfor %}
+{% endif %}
+<form method="POST">
+    {% csrf_token %}
+
+    <label for="password">New Password:</label><br>
+    <input type="password" id="password" name="password"><br><br>
+
+    <label for="re_password">Confirm New Password:</label><br>
+    <input type="password" id="re_password" name="re_password"><br><br>
+
+    <button type="submit">Set New Password</button>
+
+</form>
+
+
+</body>
+
+</html>
