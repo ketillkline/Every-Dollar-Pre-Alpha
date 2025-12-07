@@ -70,6 +70,7 @@ This is where the user will add their expenses. Expenses have a name, value, met
             <th>Frequency</th>
             <th>Category</th>
             <th>Description</th>
+            <th>Buttons</th>
         </tr>
         {% for expense in expenses %}
             <tr>
@@ -86,6 +87,16 @@ This is where the user will add their expenses. Expenses have a name, value, met
                 <td>{{ expense.frequency }}</td>
                 <td>{{ expense.category }}</td>
                 <td>{{ expense.description }}</td>
+                <td>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <button type="submit" name="action" value="clear_single">Clear</button>
+                        <button type="submit" name="action" value="edit">Edit</button>
+                        <input type="hidden" name="expense_id" value="{{ expense.id }}">
+
+                    </form>
+
+                </td>
             </tr>
         {% endfor %}
     </table>
@@ -93,9 +104,55 @@ This is where the user will add their expenses. Expenses have a name, value, met
 </div>
 <p><a href="/">Go back home</a></p>
 
+{% if editing %}
+    {% if edit_error %}
+        <p style="color:red;">{{ edit_error }}</p>
+    {% endif %}
+    <div class="modal-background">
+        <div class="modal-box">
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-grid">
+            <label for="edited_name">Name*</label>
+            <label for="edited_date">Date</label>
+            <label for="edited_value">Value*</label>
+            <label for="method">Method*</label>
+            <label for="frequency">Frequency*</label>
+            <label for="category">Category</label>
+            <label for="description">Description</label><br>
 
 
+            <input type="text" name="edited_name" id="edited_name" value="{{ target_expense.name }}">
+            <input type="date" name="edited_date" id="edited_date" value="{{ target_expense.date }}">
+            <input type="text" name="edited_value" id="edited_value" value="{{ target_expense.value }}">
+            <select name="edited_method" id="edited_method" value="{{ target_expense.method }}">
+                <option value="">-- select --</option>
+                <option value="Cash">Cash</option>
+                <option value="Credit">Credit</option>
+                <option value="Debit">Debit</option>
+            </select>
+            <select name="edited_frequency" id="edited_frequency" value="{{ target_expense.frequency }}">
+                <option value="">-- select --</option>
+                <option value="One-Time">One-Time</option>
+                <option value="Daily">Daily</option>
+                <option value="Weekly">Weekly</option>
+                <option value="Bi-Weekly">Bi-Weekly</option>
+                <option value="Monthly">Monthly</option>
+            </select>
+            <input type="text" name="edited_category" id="edited_category" value="{{ target_expense.category }}">
+            <input type="text" name="edited_description" id="edited_description" value="{{ target_expense.description }}">
+            <button type="submit" name="action" value="add_edited">Submit</button>
+            <button type="submit" name="action" value="cancel">Cancel</button>
+            <input type="hidden" name="expense_id" value="{{ target_expense.id }}">
+                 </div>
 
+            </form>
+
+        </div>
+
+    </div>
+{% endif %}
 
 
 </body>

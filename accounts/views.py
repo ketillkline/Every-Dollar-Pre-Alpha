@@ -172,6 +172,44 @@ def expenses_view(request: HttpRequest):
                 Expense.objects.all().delete()
                 return redirect("expenses")
 
+            if action == "clear_single":
+                expenses = Expense.objects.all().order_by("-date")
+                expense_id = request.POST.get("expense_id")
+                Expense.objects.filter(id=expense_id).delete()
+                expenses = Expense.objects.all().order_by("-date")
+                return render(request, 'expenses.html', {'expenses': expenses})
+
+            if action == "edit":
+                expense_id = request.POST.get("expense_id")
+                target_expense = Expense.objects.get(id=expense_id)
+                expenses = Expense.objects.all().order_by("-date")
+                return render(request, 'expenses.html', {'expenses': expenses, 'editing': True, "target_expense": target_expense})
+
+            if action == 'cancel':
+                expenses = Expense.objects.all().order_by("-date")
+                return render(request, 'expenses.html',
+                              {'expenses': expenses, 'editing': False,})
+            if action == 'add_edited':
+                expense_id = request.POST.get('expense_id')
+                target_expense = Expense.objects.get(id=expense_id)
+                target_expense.name = request.POST.get("edited_name")
+                target_expense.date = request.POST.get("edited_date")
+                target_expense.value = request.POST.get("edited_value")
+                target_expense.frequency = request.POST.get("edited_frequency")
+                target_expense.method = request.POST.get("edited_method")
+                target_expense.category = request.POST.get("edited_category")
+                target_expense.description = request.POST.get("edited_description")
+                expenses = Expense.objects.all().order_by("-date")
+                if not target_expense.name or not target_expense.value or not target_expense.frequency or not target_expense.method:
+                    return render(request, 'expenses.html', {'edit_error': "Please fill in all required fields", 'editing': True, 'expenses': expenses,
+                                                             "target_expense.name": target_expense.name, "target_expense.date": target_expense.date,
+                                                             "target_expense.value": target_expense.value, "target_expense.frequency": target_expense.frequency,
+                                                             "target_expense.method": target_expense.method, "target_expense.category": target_expense.category,
+                                                             "target_expense.description": target_expense.description})
+                target_expense.save()
+                expenses = Expense.objects.all().order_by("-date")
+                return render(request, 'expenses.html', {'expenses': expenses, 'editing': False})
+
             budget = Budget()
             errors = []
 # ----------- VARIABLE DECLARATION -------------------------------------- #
