@@ -26,5 +26,5 @@ urlpatterns = [
     path('reset/<str:username>/', views.reset_view, name='reset'),
     path('', views.home_view, name='home'),
     path('logout/', views.logout_view, name='logout'),
-    path('expenses/', views.expenses_view, name='expenses'),
+    path('expenses/', views.ExpenseView.as_view(), name='expenses'),
 ]
