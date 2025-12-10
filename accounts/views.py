@@ -202,17 +202,50 @@ class ExpenseView(View):
         pass
 
     def add(self, request: HttpRequest):
+        missing = []
+        # --------- GETTING VALUES ----------------------------------------------------------------------- #
+
         name = request.POST.get("name")
-        date = request.POST.get("date")
+        if not name:
+            missing.append("name")
+        date = request.POST.get("date") or None
         value = request.POST.get("value")
+        if not value:
+            missing.append("value")
         method = request.POST.get("method")
+        if not value:
+            missing.append("method")
         frequency = request.POST.get("frequency")
+        if not value:
+            missing.append("frequency")
         category = request.POST.get("category")
         description = request.POST.get("description")
 
-        fields = [name, date, value, method, frequency, category, description]
+        # --------- ERROR HANDLING ----------------------------------------------------------------------- #
 
-        return render(request, self.template_name, {"expenses": fields})
+        try:
+            value = float(value)
+        except ValueError:
+            if missing:
+                pass
+            else:
+                self.errors.append("Please input a number as a value")
+
+        if missing:
+            self.errors.append("Please fill in all required fields")
+
+        if self.errors:
+            return render(request, self.template_name, {"errors": self.errors, "expenses": self.expenses})
+
+        # --------- GENERATING OBJECT ----------------------------------------------------------------------- #
+
+        fields = {"name": name, "date": date, "value": value, "method": method, "frequency": frequency,
+                  "category": category, "description": description}
+
+        new_expense = Expense.objects.create(**fields)
+
+        expenses = Expense.objects.all().order_by("-date")
+        return render(request, self.template_name, {"expenses": expenses}) #
 
 
     def add_edited(self, request: HttpRequest):
