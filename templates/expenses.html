@@ -128,14 +128,36 @@ This is where the user will add their expenses. Expenses have a name, value, met
         </table>
     </div>
 
+
+<!----------------------------------------------------------------------------------------------
+-->
+
     {% if editing %}
-        {% if edit_error %}
-            {% for error in edit_error %}
+        {% if edit_errors %}
+            {% for error in edit_errors %}
                 <p style="color:red;">{{ error }}</p>
             {% endfor %}
         {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+              <h2>Edit "{{ old_fields.name }}" {% if old_fields.date %} from {{ old_fields.date }} {% endif %}</h2>
+            <div class="edit-grid">
+                <input type="hidden" name="expense_id" value="{{ old_fields.id }}">
+                <div class="field">
+                    <label for="edited_name">Name*</label>
+                    <input type="text" name="edited_name" id="edited_name" value="{{ old_fields.name }}">
+                </div>
+
+                <div class="buttons-group">
+                    <button type="submit" name="action" value="add_edited">Submit</button>
+                </div>
+
+
+
+
+            </div>
+        </form>
     {% endif %}
-
 </body>
-
 </html>

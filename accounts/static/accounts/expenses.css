@@ -42,3 +42,8 @@
     display: grid;
     justify-items: space-between;
 }
+
+.edit-grid{
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+}

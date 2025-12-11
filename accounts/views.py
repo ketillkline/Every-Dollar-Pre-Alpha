@@ -171,11 +171,11 @@ class ExpenseView(View):
         self.expenses = Expense.objects.all().order_by("-date")
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request: HttpRequest):
+    def get(self, request, *args, **kwargs):
         # expenses = Expense.objects.all().order_by("-date")
         return render(request, self.template_name, {"expenses": self.expenses})
 
-    def post(self, request: HttpRequest):
+    def post(self, request, *args, **kwargs):
         action = request.POST.get("action")
 
         match action:
@@ -184,7 +184,7 @@ class ExpenseView(View):
             case "clear_single":
                 return self.clear_single(request)
             case "edit":
-                return self.edit(request)
+                return self.edit(request, *args, **kwargs)
             case "cancel":
                 return self.cancel(request)
             case "add":
@@ -194,11 +194,11 @@ class ExpenseView(View):
 
 
 
-    def clear_all(self, request: HttpRequest):
+    def clear_all(self, request, *args, **kwargs):
         Expense.objects.all().delete()
         return render(request, self.template_name, {"expenses": self.expenses})
 
-    def clear_single(self, request: HttpRequest):
+    def clear_single(self, request, *args, **kwargs):
         expense_id = request.POST.get("expense_id")
         if not expense_id:
             self.errors.append("Invalid ID. Please try again")
@@ -206,12 +206,18 @@ class ExpenseView(View):
         expenses = Expense.objects.all().order_by("-date")
         return render(request, self.template_name, {"expenses": expenses})
 
-    def edit(self, request: HttpRequest):
-        edit_error = []
-    def cancel(self, request: HttpRequest):
+    def edit(self, request, *args, **kwargs):
+        expense_id = request.POST.get("expense_id")
+        expense = Expense.objects.get(id=expense_id)
+        old_fields = {"name": expense.name, "date": expense.date, "id": expense.id}
+
+        return render(request, self.template_name, {"old_fields": old_fields ,"editing": True, "target_expense": expense, "expenses": self.expenses})
+
+
+    def cancel(self, request, *args, **kwargs):
         pass
 
-    def add(self, request: HttpRequest):
+    def add(self, request, *args, **kwargs):
         missing = []
         # --------- GETTING VALUES ----------------------------------------------------------------------- #
 
@@ -259,8 +265,22 @@ class ExpenseView(View):
         return render(request, self.template_name, {"expenses": expenses})
 
 
-    def add_edited(self, request: HttpRequest):
-        pass
+    def add_edited(self, request, *args, **kwargs):
+        edit_errors = []
+
+        old_fields = {"name": expense.name, "date": expense.date, "id": expense.id}
+
+        name = request.POST.get("edited_name")
+
+        edited_fields = {"name": name}
+
+        for field, value in edited_fields.items():
+            setattr(expense, field, value)
+
+        expense.save()
+
+        expenses = Expense.objects.all().order_by("-date")
+
 
 
 class HomeView(LoginRequiredMixin, View):
