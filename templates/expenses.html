@@ -43,9 +43,9 @@ This is where the user will add their expenses. Expenses have a name, value, met
                 <label for="method">Method*</label>
                 <select name="method" id="method">
                     <option value="">-- select --</option>
-                    <option value="Cash" {% if fields.method == "cash" %} selected {% endif %}>Cash</option>
-                    <option value="Credit" {% if fields.method == "credit" %} selected {% endif %}>Credit</option>
-                    <option value="Debit" {% if fields.method == "debit" %} selected {% endif %}>Debit</option>
+                    <option value="Cash" {% if fields.method == "Cash" %} selected {% endif %}>Cash</option>
+                    <option value="Credit" {% if fields.method == "Credit" %} selected {% endif %}>Credit</option>
+                    <option value="Debit" {% if fields.method == "Debit" %} selected {% endif %}>Debit</option>
                 </select>
             </div>
 
@@ -53,11 +53,11 @@ This is where the user will add their expenses. Expenses have a name, value, met
                 <label for="frequency">Frequency*</label>
                 <select name="frequency" id="frequency">
                     <option value="">-- select --</option>
-                    <option value="One-Time" {% if fields.frequency == "one_time" %} selected {% endif %}>One-Time</option>
-                    <option value="Monthly" {% if fields.frequency == "monthly" %} selected {% endif %}>Monthly</option>
-                    <option value="Bi-weekly" {% if fields.frequency == "bi_weekly" %} selected {% endif %}>Bi-Weekly</option>
-                    <option value="Weekly" {% if fields.frequency == "weekly" %} selected {% endif %}>Weekly</option>
-                    <option value="Daily" {% if fields.frequency == "daily" %} selected {% endif %}>Daily</option>
+                    <option value="One-Time" {% if fields.frequency == "One-Time" %} selected {% endif %}>One-Time</option>
+                    <option value="Monthly" {% if fields.frequency == "Monthly" %} selected {% endif %}>Monthly</option>
+                    <option value="Bi-Weekly" {% if fields.frequency == "Bi-Weekly" %} selected {% endif %}>Bi-Weekly</option>
+                    <option value="Weekly" {% if fields.frequency == "Weekly" %} selected {% endif %}>Weekly</option>
+                    <option value="Daily" {% if fields.frequency == "Daily" %} selected {% endif %}>Daily</option>
                 </select>
             </div>
 

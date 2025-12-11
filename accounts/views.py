@@ -258,4 +258,12 @@ class ExpenseView(View):
     def add_edited(self, request: HttpRequest):
         pass
 
+class HomeView(View):
+    def __init__(self):
+        pass
+    def get(self, request: HttpRequest):
+        pass
+    def post(self, request: HttpRequest):
+        pass
+
 
