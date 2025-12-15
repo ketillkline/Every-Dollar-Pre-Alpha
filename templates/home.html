@@ -20,7 +20,7 @@ This is where the main application will live
     {% csrf_token %}
     <div class="income-grid">
         <div class="paycheck">
-            <label for="paycheck">Paycheck</label><br>
+             <h2>So, tell me about yourself</h2>
             <div class="errors">
                 {% if errors %}
                     {% for error in errors %}
@@ -28,7 +28,26 @@ This is where the main application will live
                     {% endfor %}
                 {% endif %}
             </div>
+            <label for="paycheck">I get paid</label>
             <input type="text" name="paycheck" id="paycheck">
+            <label for="frequency">
+                every
+            </label>
+            <select name="frequency" id="frequency">
+                <option value="">-- select --</option>
+                <option value="month">month</option>
+                <option value="two-weeks">two weeks</option>
+                <option value="week">week</option>
+                <option value="day">day</option>
+            </select>
+            <label for="aggression">I want to save</label>
+            <select for="aggression">
+                <option value="">-- select --</option>
+                <option value="moderately">moderately (70/30)</option>
+                <option value="aggressively">aggressively (80/20)</option>
+                <option value="mercilessly">mercilessly (90/10)</option>
+                <option value="everything">everything (100/0)</option>
+            </select>
             <button type="submit">Submit</button>
         </div>
         {% if paycheck_input %}
