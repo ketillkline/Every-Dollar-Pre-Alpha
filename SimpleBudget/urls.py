@@ -27,4 +27,5 @@ urlpatterns = [
     path('', views.HomeView.as_view(), name='home'),
     path('logout/', views.logout_view, name='logout'),
     path('expenses/', views.ExpenseView.as_view(), name='expenses'),
+    path('budget/', views.BudgetView.as_view(), name='budget')
 ]

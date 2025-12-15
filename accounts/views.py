@@ -348,7 +348,7 @@ class HomeView(LoginRequiredMixin, View):
         if self.errors:
             return render(request, self.template_name, {"paycheck_input": False, "errors": self.errors})
 
-        return render(request, self.template_name, {"paycheck_input": True,
+        return render(request, "budget.html", {"paycheck_input": True,
                                                     "to_savings": self.get_budget_calculations(paycheck)[0],
                                                     "free_money": self.get_budget_calculations(paycheck)[1],
                                                     "paycheck": paycheck})
@@ -360,4 +360,14 @@ class HomeView(LoginRequiredMixin, View):
         free_money = leftover * 0.3
         return [to_savings, free_money]
 
+
+class BudgetView(View):
+    def dispatch(self, request, *args, **kwargs):
+        self.template_name = "budget.html"
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
+    def post(self, request, *args, **kwargs):
+        pass
 
