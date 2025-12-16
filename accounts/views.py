@@ -381,8 +381,8 @@ class HomeView(LoginRequiredMixin, View):
     def get_allocations(self, income: Income):
         aggression = income.aggression
         leftover = income.value - self.get_expense_values(income)
-        to_savings = leftover * aggression
-        free_money = leftover - to_savings
+        to_savings = round(leftover * aggression, 2)
+        free_money = round(leftover - to_savings, 2)
         return [to_savings, free_money]
 
 
