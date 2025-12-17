@@ -7,11 +7,13 @@
     <link ref="">
 </head>
 <body>
-<p>So, you earn ${{ income.value }} every {{ income.frequency }}<br>
-and want to save {{ income.aggression }}?</p>
-<h1>Well, here's what you'll do:</h1>
-<p>You'll save ${{ to_savings }}</p>
-<p>You can spend ${{ free_money }}</p>
+<h1>Let's do some math</h1>
+<p>So, you earn ${{ income.value }} {{ income.frequency|lower }}<br>
+and want to save {{ income.aggression|floatformat:0 }}% of that?</p>
+<h2>Taking into account your {{ income.frequency|lower }} expenses totaling ${{ expense_total }}... </h2>
+<h2>Here's what you'll have left:</h2>
+<h3>You'll save: ${{ to_savings }}</h3>
+<h3>You can spend: ${{ free_money }}</h3>
 <input type="hidden" name="paycheck" value="{{ paycheck }}">
 
 </body>

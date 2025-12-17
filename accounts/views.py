@@ -360,10 +360,11 @@ class HomeView(LoginRequiredMixin, View):
 
         income = Income(**fields)
         self.get_allocations(income)
+        expense_total = self.get_expense_values(income)
 
 
         return render(request, "budget.html", {"income": income, "to_savings": self.get_allocations(income)[0],
-                                               "free_money": self.get_allocations(income)[1]})
+                                               "free_money": self.get_allocations(income)[1], "expense_total": expense_total})
 
     def get_expense_values(self, income: Income):
         frequencies_dict = {"Monthly": 1, "Bi-Weekly": 2, "Weekly": 4, "Daily": 30}
@@ -379,7 +380,7 @@ class HomeView(LoginRequiredMixin, View):
 
 
     def get_allocations(self, income: Income):
-        aggression = income.aggression
+        aggression = income.aggression / 100
         leftover = income.value - self.get_expense_values(income)
         to_savings = round(leftover * aggression, 2)
         free_money = round(leftover - to_savings, 2)

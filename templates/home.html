@@ -20,7 +20,7 @@ This is where the main application will live
     {% csrf_token %}
     <div class="income-grid">
         <div class="paycheck">
-             <h2>So, tell me about yourself</h2>
+             <h2>Tell me about the money</h2>
             <div class="errors">
                 {% if errors %}
                     {% for error in errors %}
@@ -30,10 +30,10 @@ This is where the main application will live
             </div>
             <label for="date">On</label>
             <input type="date" name="date" id="date">
-            <label for="paycheck">I get paid</label>
+            <label for="paycheck">I got paid</label>
             <input type="text" name="paycheck" id="paycheck">
             <label for="frequency">
-                every
+                My paychecks are
             </label>
             <!--
             Refactor this somehow by making frequencies list/dict inside
@@ -41,18 +41,18 @@ This is where the main application will live
             -->
             <select name="frequency" id="frequency">
                 <option value="">-- select --</option>
-                <option value="Monthly">month</option>
-                <option value="Bi-Weekly">two weeks</option>
-                <option value="Weekly">week</option>
-                <option value="Daily">day</option>
+                <option value="Monthly">monthly</option>
+                <option value="Bi-Weekly">bi-weekly</option>
+                <option value="Weekly">weekly</option>
+                <option value="Daily">daily</option>
             </select>
             <label for="aggression">I want to save</label>
             <select name="aggression" id="aggression">
                 <option value="">-- select --</option>
-                <option value="0.7">moderately (70/30)</option>
-                <option value="0.8">aggressively (80/20)</option>
-                <option value="0.9">mercilessly (90/10)</option>
-                <option value="1.0">everything (100/0)</option>
+                <option value="70">moderately (70/30)</option>
+                <option value="80">aggressively (80/20)</option>
+                <option value="90">mercilessly (90/10)</option>
+                <option value="100">everything (100/0)</option>
             </select>
             <button type="submit">Submit</button>
         </div>
