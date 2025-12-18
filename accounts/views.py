@@ -11,6 +11,7 @@ from utils.classes import Budget
 from accounts.static.accounts.database import Expense, Income
 from django.views import View
 from datetime import date, datetime, timedelta
+from dateutil.relativedelta import relativedelta
 
 
 def login_view(request: HttpRequest):
@@ -397,7 +398,7 @@ class HomeView(LoginRequiredMixin, View):
         date_object = datetime.strptime(date, "%Y-%m-%d").date()
         frequency_dict = {"Bi-Weekly": 14, "Weekly": 7, "Daily": 1}
         if income.frequency == "Monthly":
-
+            end_date = date_object + relativedelta(months=1)
             return end_date
         else:
             days_added = frequency_dict.get(income.frequency)
