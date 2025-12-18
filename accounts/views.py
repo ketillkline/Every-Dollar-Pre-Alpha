@@ -348,15 +348,19 @@ class HomeView(LoginRequiredMixin, View):
         if not frequency:
             self.errors.add("Please fill in all fields.")
 
-        aggression = float(request.POST.get("aggression"))
-        if not aggression:
+        aggression = request.POST.get("aggression")
+        try:
+            aggression = float(aggression)
+        except ValueError:
+            self.errors.add("Please fill in all fields.")
+        date = request.POST.get("date")
+        if not date:
             self.errors.add("Please fill in all fields.")
 
-
+        fields = {"value": paycheck, "frequency": frequency, "aggression": aggression, "date": date}
         if self.errors:
-            return render(request, self.template_name, {"paycheck_input": False, "errors": self.errors})
+            return render(request, self.template_name, {"paycheck_input": False, "errors": self.errors, "fields": fields})
 
-        fields = {"value": paycheck, "frequency": frequency, "aggression": aggression}
 
         income = Income(**fields)
         self.get_allocations(income)
