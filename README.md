@@ -61,7 +61,7 @@ I wanted a way to exercise my coding skills while also improving my financial ha
 budgeting app that I would actually use made sense. This is the bigger project I’ve been leaning 
 toward, and the precursor to it was the CADE Data Entry app.<br><br>
 This project is the next step above that.
-## Origin of the Name
+## 🧔‍♂️ Origin of the Name
 The name Every Dollar comes from Dave Ramsey’s book The <i>Total Money Makeover</i>, where he emphasizes that every dollar should have a purpose. This application is built on that same idea: ensuring that every single dollar has a name and a destination.
 
 # To-Add on README:
