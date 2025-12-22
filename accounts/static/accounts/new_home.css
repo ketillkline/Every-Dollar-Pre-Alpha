@@ -4,3 +4,10 @@
     grid-template-rows: 1fr 1fr;
     height: 100vh;
 }
+
+#money-wheel {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: lightgray;
+}
