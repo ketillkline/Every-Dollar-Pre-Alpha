@@ -9,5 +9,14 @@
     width: 200px;
     height: 200px;
     border-radius: 50%;
-    background: lightgray;
+    background: conic-gradient(
+    red 0deg var(--bill-deg),
+    green var(--bill-deg) 360deg
+    );
+}
+
+#money-wheel-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

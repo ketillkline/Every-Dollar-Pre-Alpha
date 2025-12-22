@@ -1,7 +1,7 @@
 // STATIC DATA //
 
 const paycheck_amount = 2000;
-const bills_amount = 1200;
+const bills_amount = 1000;
 const savings_amount = 200;
 
 // DYNAMICS
@@ -15,6 +15,10 @@ console.log("Free percent:", free_percent);
 
 const bills_degrees = bills_percent * 360;
 const free_degrees = 360 - bills_degrees;
+
+const wheel = document.getElementById("money-wheel");
+wheel.style.setProperty("--bill-deg", bills_degrees + "deg")
+wheel.style.setProperty("--free-deg", "360deg")
 
 console.log(bills_degrees, free_degrees)
 
