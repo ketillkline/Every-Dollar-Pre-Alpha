@@ -25,12 +25,40 @@
     </div>
 
     <div class="savings-table">
-        <p>Savings</p>
+        <table border="1">
+            <tr>
+                <th>I'll save</th>
+                <th>I can spend</th>
+                <th>Until</th>
+            </tr>
+            {% for bill in bills %}
+            <tr>
+                <td>{{ bill.name }}</td>
+                <td>{{ bill.amount }}</td>
+                <td>{{ bill.day }}</td>
+            </tr>
+            {% endfor %}
+        </table>
 
     </div>
 
     <div class="bills-table">
-     <p>Bills</p>
+     <table border="1">
+         <tr>
+             <th>Name</th>
+             <th>Amount</th>
+             <th>Pay Day</th>
+         </tr>
+
+         <tr>
+             <td colspan="3">
+                 <button type="submit">
+                     +
+                 </button>
+             </td>
+         </tr>
+
+     </table>
     </div>
 
 </div>
