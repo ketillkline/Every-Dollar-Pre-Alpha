@@ -53,7 +53,7 @@ class HomeView(LoginRequiredMixin, View):
 
 
         income = Income(**fields)
-        self.get_allocations(income)
+
         expense_total = self.get_expense_values(income)
         end_date = self.get_end_date(income, date)
 
@@ -68,6 +68,9 @@ class HomeView(LoginRequiredMixin, View):
         aligned_frequency = frequencies_dict.get(income.frequency)
         expense_values = []
         for expense in expenses:
+            if expense.frequency == "One-Time":
+                expense_values.append(expense.value)
+                continue
             frequency_id = frequencies_dict.get(expense.frequency)
             new_value = (frequency_id/aligned_frequency) * expense.value
             expense_values.append(new_value)

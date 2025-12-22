@@ -14,7 +14,7 @@ class ExpenseView(View):
 
     def get(self, request, *args, **kwargs):
         # expenses = Expense.objects.all().order_by("-date")
-        return render(request, self.template_name, {"expenses": self.expenses})
+        return render(request, self.template_name, {"expenses": self.expenses, "user": self.user})
 
     def post(self, request, *args, **kwargs):
         action = request.POST.get("action")
