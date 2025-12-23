@@ -10,37 +10,39 @@ After this, they will be directed to reset.html to actually set their new passwo
 <head>
     <meta charset="UTF-8">
     <title>Password Recovery</title>
-
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/recovery.css' %}">
 </head>
 
 <body>
+<div class="center-box">
+    <h1 class="header">Let's get your account back!</h1>
+    <p class="text">We'll do this by resetting your password.<br>First, please
+    enter your username and email.</p>
+    {% if errors %}
+    <div class="errors">
+            {% for error in errors %}
+                <li style="color:red;">{{ error }}</li>
+            {% endfor %}
+    </div>
+    {% endif %}
 
-<h1>Let's get your account back!</h1>
-<p>We'll do this by resetting your password.<br>First, please
-enter your username and email.</p>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username"><br><br>
 
-{% if errors %}
-    {% for error in errors %}
-        <li style="color:red;">{{ error }}</li>
-    {% endfor %}
-{% endif %}
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email"><br>
 
-<form method="POST">
-    {% csrf_token %}
-    <label for="username">Username:</label><br>
-    <input type="text" id="username" name="username"><br><br>
+        <p class="form-link"><a href="/login/">Remembered your password?</a></p>
 
-    <label for="email">Email:</label><br>
-    <input type="email" id="email" name="email"><br>
-
-    <p><a href="/login/">Remembered your password?</a></p>
-
-    <button type="submit">Reset Password</button>
+        <button type="submit">Reset Password</button>
 
 
 
-</form>
-
+    </form>
+</div>
 
 </body>
 
