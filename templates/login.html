@@ -11,31 +11,34 @@ New here? Create an account!
 <head>
     <meta charset="UTF-8">
     <title>Login Page</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/login.css' %}">
 
 </head>
 
 <body>
-<h1>Welcome!</h1>
+    <div class="center-box">
+        <h1 class="header">Welcome!</h1>
 
-{% if error %}
-    <p style="color:red;">{{ error }}</p>
-{% endif %}
-<form method = "POST">
-    {% csrf_token %}
+        {% if error %}
+            <div class="errors">
+                <p style="color:red;">{{ error }}</p>
+            </div>
+        {% endif %}
+        <form method = "POST">
+            {% csrf_token %}
 
-    <label for="username">Username:</label><br>
-    <input type="text" id="username" name="username" value="{{ username }} "><br><br>
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" name="username" value="{{ username }} "><br><br>
 
-    <label for="password">Password:</label><br>
-    <input type="password" id="password" name="password"><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password"><br>
 
-    <p><a href="/signup">New here? Create an Account</a></p>
-    <p><a href="/recovery/">Forgot your Password?</a></p>
-    <button type="submit">Login</button>
-
-</form>
-
-
+            <p class="form-link"><a href="/signup">New here? Create an Account</a></p>
+            <p class="form-link"><a href="/recovery/">Forgot your Password?</a></p>
+            <button type="submit">Login</button>
+        </form>
+    </div>
 </body>
 
 </html>
