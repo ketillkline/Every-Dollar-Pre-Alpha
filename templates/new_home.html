@@ -11,57 +11,60 @@
 <body>
 
 <div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="paycheck-box">
+            <div class="field">
+                <label for="paycheck">Paycheck</label><br>
+                <input type="number" name="paycheck" id="paycheck">
+            </div>
 
-    <div class="paycheck-box">
-        <div class="field">
-            <label for="paycheck">Paycheck</label><br>
-            <input type="number" name="paycheck" id="paycheck">
+            <div class="field">
+                <label for="start-date">Start</label><br>
+                <input type="date" name="start-date" id="start-date">
+            </div>
+
+            <div class="field">
+               <label for="end-date">Until</label><br>
+                <input type="date" name="end-date" id="end-date">
+            </div>
+
+            <div class="buttons-group">
+                <button type="submit">Submit</button>
+            </div>
         </div>
 
-        <div class="field">
-            <label for="start-date">Start</label><br>
-            <input type="date" name="start-date" id="start-date">
+        <div class="bills-container">
+            <table border="1" id="bills-table" class="bills-table">
+                <tr>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Pay Day</th>
+                    <th>Buttons</th>
+                </tr>
+                {% for bill in bills %}
+                <tr>
+                    <td>{{ bill.name }}</td>
+                    <td>{{ bill.amount }}</td>
+                    <td>{{ bill.pay_day }}</td>
+                    <td><button type="button" id="edit-bill">Edit</button></td>
+                </tr>
+                {% endfor %}
+                <tr id="add-row">
+                    <td colspan="5">
+                        <button type="button" id="bill_trigger">+ Add New Bill</button>
+                    </td>
+                </tr>
+            </table>
         </div>
+    </form>
 
-        <div class="field">
-           <label for="end-date">Until</label><br>
-            <input type="date" name="end-date" id="end-date">
-        </div>
-
-        <div class="buttons-group">
-            <button type="submit">Submit</button>
-        </div>
-    </div>
-
-    <div class="bills-container">
-        <table border="1" class="bills-table">
-            <tr>
-                <th>Name</th>
-                <th>Amount</th>
-                <th>Pay Day</th>
-                <th>Buttons</th>
-            </tr>
-            {% for bill in bills %}
-            <tr>
-                <td>{{ bills.name }}</td>
-                <td>{{ bills.amount }}</td>
-                <td>{{ bills.day }}</td>
-            </tr>
-            {% endfor %}
-            <tr id="add-row">
-                <td colspan="4">
-                    <button type="submit" name="action" value="bill_trigger">+ Add New Bill</button>
-                </td>
-            </tr>
-        </table>
-
-    </div>
-
-
-    <div id="money-wheel-container">
+<div id="money-wheel-container">
         <div id="money-wheel">
         </div>
     </div>
+
+
 
 
 

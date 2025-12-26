@@ -18,8 +18,6 @@ class NewHomeView(View):
     def post(self, request, *args, **kwargs):
         action = request.POST.get("action")
         match action:
-            case "bill_trigger":
-                print("it works")
             case "add_bill":
                 return self.add_bill(request)
             case "edit_bill":
@@ -39,14 +37,13 @@ class NewHomeView(View):
         if not pay_day:
             self.errors.add("Please fill in all required fields")
 
-        fields = {"bill_name": name, "bill_amount": amount, "bill_pay_day": pay_day,
-                  "user": self.user}
+        fields = {"name": name, "amount": amount, "pay_day": pay_day}
 
         if self.errors:
             return render(request, self.template_name, {"errors": self.errors, "bill_fields": fields})
 
         new_bill = Bill.objects.create(**fields, user=self.user)
-        bills = Bill.objects.all().filter(user=self.user).order_by("-bill_pay_day")
+        bills = Bill.objects.all().filter(user=self.user).order_by("-pay_day")
         print("it works!")
         return render(request, self.template_name, {"bills": bills})
 
