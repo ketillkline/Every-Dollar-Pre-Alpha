@@ -13,7 +13,8 @@ class NewHomeView(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
+        bills = Bill.objects.all().filter(user=self.user).order_by("-pay_day")
+        return render(request, self.template_name, {"bills": bills})
 
     def post(self, request, *args, **kwargs):
         action = request.POST.get("action")
