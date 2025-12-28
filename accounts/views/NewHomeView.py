@@ -15,7 +15,6 @@ class NewHomeView(View):
 
     def get(self, request, *args, **kwargs):
         bills = Bill.objects.all().filter(user=self.user).order_by("-pay_day")
-        Income.objects.all().delete()
         return render(request, self.template_name, {"bills": bills, "add_new_clicked": False})
 
     def post(self, request, *args, **kwargs):
@@ -70,10 +69,13 @@ class NewHomeView(View):
         if not end_date:
             self.income_errors.add("Please fill in all required fields")
 
-        fields = {"paycheck": paycheck, "start_date": start_date, "end_date": end_date}
+        fields = {"amount": paycheck, "start_date": start_date, "end_date": end_date}
 
         if self.income_errors:
             return render(request, self.template_name, {"fields": fields})
+
+        income = Income.objects.create(**fields, user=self.user)
+        return render(request, self.template_name, {"income": income})
 
 
 
