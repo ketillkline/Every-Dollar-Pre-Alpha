@@ -4,10 +4,9 @@ from django.contrib.auth.models import User
 
 class Income(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    value = models.FloatField()
-    frequency = models.CharField()
-    aggression = models.CharField()
-    date =models.DateField()
+    amount = models.FloatField()
+    start_date = models.DateField()
+    end_date = models.DateField()
 
 class Expense(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
