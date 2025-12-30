@@ -59,7 +59,7 @@
                             <td>{{ bill.pay_day }}</td>
                             <td>
                                 <button type="button" class="edit_bill_trigger">Edit</button>
-                                <button type="submit" name="action" value="delete_bill">Delete</button>
+                                <button type="submit" class="delete_button" name="action" value="delete_bill">Delete</button>
                                 <input type="hidden" name="bill_id" value="{{ bill.id }}">
                                 <input type="hidden" name="total_bills" id="total_bills" value="{{ total_bills }}">
                             </td>
@@ -94,4 +94,5 @@
 </body>
 
 </html>
+
 

@@ -14,7 +14,16 @@ class BillManager {
         })
         this.table.addEventListener("click", (e) => {
             if (e.target.classList.contains("edit_bill_trigger")){
-                console.log(e.target.dataset.name)
+                const row = e.target.closest("tr");
+
+            const old_info = [ // name, amount, payday
+                row.dataset.name, row.dataset.amount, row.dataset.payday];
+
+            const editButton = e.target.closest(".edit_bill_trigger");
+            const deleteButton = row.querySelector(".delete_button");
+            console.log(deleteButton);
+            const elements = [editButton, deleteButton];
+            this.editBillRow(elements, old_info, row);
             }
         });
     }
@@ -51,13 +60,33 @@ class BillManager {
             this.updateUI(this.addButton, "show");
         })
     }
-    editBillRow() {
-        console.log("editing Bill");
-        this.editingBill = true;
-        this.updateUI();
-        const row = document.getElementById("bill-row");
-        console.log(row.dataset.name);
 
+
+    editBillRow(elements, old_info, row) {
+        for (const element of elements){
+            this.updateUI(element, "hide");
+        }
+
+        const originalHTML = row.innerHTML;
+
+        row.innerHTML =
+       ` <td><input value="${old_info[0]}"></td>
+        <td><input value="${old_info[1]}"></td>
+        <td><input value="${old_info[2]}"></td>
+        <td>
+            <button type="submit" class="save_edits_button" name="action" value="save_edited_bill">Save Edits</button>
+            <button type="button" class="cancel_edits_button">Cancel</button>
+        </td>
+        `;
+
+        const cancelButton = row.querySelector(".cancel_edits_button");
+        cancelButton.addEventListener("click", () => {
+            row.innerHTML = originalHTML;
+
+            for (const element of elements){
+                this.updateUI(element, "show");
+            };
+        });
 
 
     }
