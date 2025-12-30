@@ -17,7 +17,7 @@
                 <div class="field">
                     <label for="paycheck">Paycheck</label><br>
                     <input type="number" name="paycheck" id="paycheck" value="{{ income.amount }}">
-                    <input type="text" name="paycheck_amount" id="paycheck_amount" value="{{ income.amount }}">
+                    <input type="hidden" name="paycheck_amount" id="paycheck_amount" value="{{ income.amount }}">
                 </div>
 
                 <div class="field">
@@ -49,15 +49,15 @@
 
                     <tbody class="bills-body">
                         {% for bill in bills %}
-                        <tr>
+                        <tr id="{{ bill.name }} row">
                             <td>{{ bill.name }}</td>
                             <td>{{ bill.amount }}</td>
                             <td>{{ bill.pay_day }}</td>
                             <td>
-                                <button type="button" id="edit-bill">Edit</button>
+                                <button type="button" id="edit_bill_trigger">Edit</button>
                                 <button type="submit" name="action" value="delete_bill">Delete</button>
                                 <input type="hidden" name="bill_id" value="{{ bill.id }}">
-                                <input type="text" name="total_bills" id="total_bills" value="{{ total_bills }}">
+                                <input type="hidden" name="total_bills" id="total_bills" value="{{ total_bills }}">
                             </td>
                         </tr>
                         {% endfor %}
