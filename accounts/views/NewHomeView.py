@@ -30,8 +30,8 @@ class NewHomeView(View):
         match action:
             case "add_bill":
                 return self.add_bill(request)
-            case "edit_bill":
-                return self.edit_bill(request)
+            case "save_edited_bill":
+                return self.save_edited_bill(request)
             case "delete_bill":
                 return self.delete_bill(request)
             case "add_income":
@@ -39,7 +39,7 @@ class NewHomeView(View):
 
 
     def add_bill(self, request: HttpRequest):
-        print("There were errors")
+
         name = request.POST.get("bill_name")
         if not name:
             self.errors.add("Please fill in all required fields")
@@ -65,7 +65,7 @@ class NewHomeView(View):
         Bill.objects.filter(user=self.user, id=bill_id).delete()
         bills = Bill.objects.filter(user=self.user).order_by("-pay_day")
         total_bills = Bill.objects.aggregate(total=Sum("amount"))
-        print(self.income.amount)
+
         return render(request, self.template_name, {"bills": bills, "income": self.income, "total_bills": total_bills['total']})
 
     def add_income(self, request: HttpRequest):
@@ -89,6 +89,26 @@ class NewHomeView(View):
         total_bills = Bill.objects.aggregate(total=Sum("amount"))
         return render(request, self.template_name, {"income": self.income, "bills": bills, "total_bills": total_bills['total']})
 
+    def save_edited_bill(self, request: HttpRequest):
+        bill_id = request.POST.get("bill_id")
+        print(bill_id)
+        target_bill = Bill.objects.get(user=self.user, id=bill_id)
+        if not target_bill:
+            print("Not here")
+
+        name = request.POST.get("edited_bill_name")
+        amount = request.POST.get("edited_bill_amount")
+        pay_day = request.POST.get("edited_bill_payday")
+
+        edited_fields = {"name": name, "amount": amount, "pay_day": pay_day}
+
+        for field, value in edited_fields.items():
+            setattr(target_bill, field, value)
+        target_bill.save()
+
+        bills = Bill.objects.filter(user=self.user).all().order_by("-pay_day")
+
+        return render(request, self.template_name, {"bills": bills, "income": self.income})
 
 
 

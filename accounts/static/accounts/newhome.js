@@ -17,7 +17,8 @@ class BillManager {
                 const row = e.target.closest("tr");
 
             const old_info = [ // name, amount, payday
-                row.dataset.name, row.dataset.amount, row.dataset.payday];
+                row.dataset.name, row.dataset.amount, row.dataset.payday,
+                row.dataset.id];
 
             const editButton = e.target.closest(".edit_bill_trigger");
             const deleteButton = row.querySelector(".delete_button");
@@ -69,12 +70,13 @@ class BillManager {
         const originalHTML = row.innerHTML;
 
         row.innerHTML =
-       ` <td><input type="text" value="${old_info[0]}"></td>
-        <td><input type="number" value="${old_info[1]}"></td>
-        <td><input type="number" value="${old_info[2]}"></td>
+       ` <td><input type="text" name="edited_bill_name" value="${old_info[0]}"></td>
+        <td><input type="number" name="edited_bill_amount" value="${old_info[1]}"></td>
+        <td><input type="number" name="edited_bill_payday" value="${old_info[2]}"></td>
         <td>
             <button type="submit" class="save_edits_button" name="action" value="save_edited_bill">Save Edits</button>
             <button type="button" class="cancel_edits_button">Cancel</button>
+            <input type="hidden" name="bill_id" value="${old_info[3]}">
         </td>
         `;
 
