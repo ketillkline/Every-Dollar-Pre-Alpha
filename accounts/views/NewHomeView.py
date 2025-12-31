@@ -51,9 +51,11 @@ class NewHomeView(View):
             self.errors.add("Please fill in all required fields")
 
         fields = {"name": name, "amount": amount, "pay_day": pay_day}
+        bills = Bill.objects.filter(user=self.user).all().order_by("-pay_day")
 
         if self.errors:
-            return render(request, self.template_name, {"errors": self.errors, "bill_fields": fields, "income": self.income})
+            return render(request, self.template_name, {"errors": self.errors, "bill_fields": fields,
+                                                        "income": self.income, "bills": bills})
 
         new_bill = Bill.objects.create(**fields, user=self.user)
         bills = Bill.objects.all().filter(user=self.user).order_by("-pay_day")

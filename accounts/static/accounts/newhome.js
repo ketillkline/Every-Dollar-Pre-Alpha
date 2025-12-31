@@ -1,6 +1,7 @@
 class BillManager {
     constructor(){
         this.table = document.getElementById("bills-table");
+        this.form = this.table.closest("form");
 
         this.addButton = document.getElementById("bill_trigger");
         this.updateUI(this.addButton, "show");
@@ -25,6 +26,9 @@ class BillManager {
             const elements = [editButton, deleteButton];
             this.editBillRow(elements, old_info, row);
             }
+        });
+        this.form.addEventListener("submit", (e) => {
+            this.handleSubmit(e);
         });
     }
 
@@ -51,6 +55,7 @@ class BillManager {
             <button type="button" class="cancel-bill">Cancel</button>
         </td>
         `
+
         this.tbody.appendChild(row);
 
         const cancelButton = row.querySelector(".cancel-bill");
@@ -91,6 +96,25 @@ class BillManager {
         });
 
 
+    }
+
+    handleSubmit(e){
+        const activeRow = this.tbody.querySelector("tr:last-child");
+
+        if (!activeRow) return;
+
+        const nameInput = activeRow.querySelector('[name="bill_name"]');
+        const amountInput = activeRow.querySelector('[name="bill_amount"]');
+        const paydayInput = activeRow.querySelector('[name="bill_pay_day"]');
+
+        const name = nameInput?.value.trim();
+        const amount = amountInput?.value.trim();
+        const payday = paydayInput?.value.trim();
+
+        if (!name || !amount || !payday){
+            e.preventDefault();
+            return;
+        }
     }
 }
 
