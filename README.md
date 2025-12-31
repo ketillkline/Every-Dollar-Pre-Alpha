@@ -6,17 +6,18 @@ authentication
 # ✨ In-Scope Project Feature Checklist
 
 ## Income Management
-- [] Add paycheck
-- [] Add start and end date
-- [] Calculate frequency manually
+- [x] Add paycheck
+- [x] Add start and end date
+- [] Calculate frequency automatically
 
 ## Leftover Money
-- [] Add progress bar to show leftover money
+- [x] Add progress bar to show leftover money
 - [] Add popup to add expense and take away money
+- [] Add hover option that shows leftover money on money wheel
 
 ## Bill Management
-- [] Add Bills with Name, Amount, and Day
-- [] Dynamic "Add new" button with "+"
+- [x] Add Bills with Name, Amount, and Pay Day
+- [x] Dynamic "Add new" button with "+"
 
 ## Saving & Spending Allocations
 - [] Add aggressiveness slider bar that changes color and displays aggressiveness
@@ -24,7 +25,8 @@ authentication
 - [] Show user what they can spend
 
 ## Transaction History
-- [] Add separate page that tracks expenses with name, value, and date
+- [] Add separate page that tracks expenses with name, value, category, and date
+- [] Allow user to predefine custom categories dynamically
 
 # 🤯 Out-Scope Feature Checklist
 - [] Tax APIs
