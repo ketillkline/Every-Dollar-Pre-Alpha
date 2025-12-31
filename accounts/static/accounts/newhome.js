@@ -5,6 +5,7 @@ class BillManager {
 
         this.addButton = document.getElementById("bill_trigger");
         this.updateUI(this.addButton, "show");
+        this.editingRow = null;
 
         this.tbody = document.querySelector(".bills-body");
         this.setupEvents();
@@ -68,6 +69,7 @@ class BillManager {
 
 
     editBillRow(elements, old_info, row) {
+        this.editingRow = row;
         for (const element of elements){
             this.updateUI(element, "hide");
         }
@@ -75,7 +77,8 @@ class BillManager {
         const originalHTML = row.innerHTML;
 
         row.innerHTML =
-       ` <td><input type="text" name="edited_bill_name" value="${old_info[0]}"></td>
+       `
+       <td><input type="text" name="edited_bill_name" value="${old_info[0]}"></td>
         <td><input type="number" name="edited_bill_amount" value="${old_info[1]}"></td>
         <td><input type="number" name="edited_bill_payday" value="${old_info[2]}"></td>
         <td>
@@ -103,20 +106,48 @@ class BillManager {
         if (action == "delete_bill"){
             return;
         }
-        const activeRow = this.tbody.querySelector("tr:last-child");
+
+
+        const activeRow =
+            action == "save_edited_bill"
+                ? this.editingRow
+                : this.tbody.querySelector("tr:last-child");
 
         if (!activeRow) return;
 
+        if (action == "save_edited_bill"){
+
+            const nameInput = activeRow.querySelector('[name="edited_bill_name"]');
+            const amountInput = activeRow.querySelector('[name="edited_bill_amount"]');
+            const paydayInput = activeRow.querySelector('[name="edited_bill_payday"]');
+
+            const name = nameInput?.value.trim();
+            const amount = amountInput?.value.trim();
+            const payday = paydayInput?.value.trim();
+            console.log("Editing", name, amount, payday)
+
+            if (!name || !amount || !payday){
+            e.preventDefault();
+            alert("Please fill in all required fields");
+            return;
+        }
+        return;
+        }
+
+
+
         const nameInput = activeRow.querySelector('[name="bill_name"]');
         const amountInput = activeRow.querySelector('[name="bill_amount"]');
-        const paydayInput = activeRow.querySelector('[name="bill_pay_day"]');
+        const paydayInput = activeRow.querySelector('[name="bill_payday"]');
 
         const name = nameInput?.value.trim();
         const amount = amountInput?.value.trim();
         const payday = paydayInput?.value.trim();
+        console.log("Saving New", name, amount, payday)
 
         if (!name || !amount || !payday){
             e.preventDefault();
+            alert("Please fill in all required fields");
             return;
         }
     }

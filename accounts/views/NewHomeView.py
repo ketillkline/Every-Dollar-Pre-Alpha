@@ -83,9 +83,13 @@ class NewHomeView(View):
             self.income_errors.add("Please fill in all required fields")
 
         fields = {"amount": paycheck, "start_date": start_date, "end_date": end_date}
+        bills = bills = Bill.objects.all().filter(user=self.user).order_by("-pay_day")
+        total_bills = Bill.objects.aggregate(total=Sum("amount"))
 
         if self.income_errors:
-            return render(request, self.template_name, {"fields": fields})
+            return render(request, self.template_name, {"fields": fields, "income": self.income,
+                                                        "errors": self.income_errors, "bills": bills,
+                                                        "total_bills": total_bills['total']})
 
         bills = Bill.objects.all().filter(user=self.user).order_by("-pay_day")
         self.income = Income.objects.create(**fields, user=self.user)
@@ -94,11 +98,7 @@ class NewHomeView(View):
 
     def save_edited_bill(self, request: HttpRequest):
         bill_id = request.POST.get("bill_id")
-        print(bill_id)
         target_bill = Bill.objects.get(user=self.user, id=bill_id)
-        if not target_bill:
-            print("Not here")
-
         name = request.POST.get("edited_bill_name")
         amount = request.POST.get("edited_bill_amount")
         pay_day = request.POST.get("edited_bill_payday")
