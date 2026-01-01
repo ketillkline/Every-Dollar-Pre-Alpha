@@ -34,6 +34,8 @@ class NewHomeView(View):
                 return self.delete_bill(request)
             case "add_income":
                 return self.add_income(request)
+            case "clear_all_incomes":
+                return self.clear_all_incomes(request)
 
 
     def add_bill(self, request: HttpRequest):
@@ -80,7 +82,8 @@ class NewHomeView(View):
         if self.income_errors:
             return render(request, self.template_name, {"fields": fields,
                                                         "errors": self.income_errors, **self.get_base_context()})
-        new_income = Income.objects.create(**fields)
+        new_income = Income.objects.create(**fields, user=self.user)
+        self.income = new_income
 
         return render(request, self.template_name, self.get_base_context())
 
@@ -105,10 +108,14 @@ class NewHomeView(View):
         return datetime.strptime(date, "%Y-%m-%d").date()
 
     def get_pay_period(self, start_date, end_date):
-        start_date = self.get_date_object(start_date)
-        end_date = self.get_date_object(end_date)
-        delta = end_date - start_date
-        return delta.days
+        if type(start_date) == str and type(end_date) == str:
+            start_date = self.get_date_object(start_date)
+            end_date = self.get_date_object(end_date)
+            delta = end_date - start_date
+            return delta.days
+        else:
+            delta = end_date - start_date
+            return delta.days
 
     def get_base_context(self):
         bills = Bill.objects.filter(user=self.user).all().order_by("pay_day")
@@ -117,9 +124,7 @@ class NewHomeView(View):
         pay_period_days = None
         if self.income:
             income = self.income
-            start_date = self.income.start_date
-            end_date = self.income.end_date
-            pay_period_days = self.get_pay_period(start_date, end_date)
+            pay_period_days = self.get_pay_period(self.income.start_date, self.income.end_date)
         return {
             "bills": bills,
             "total_bills": total_bills['total'],
@@ -127,7 +132,10 @@ class NewHomeView(View):
             "pay_period_days": pay_period_days,
 
         }
-
+    def clear_all_incomes(self, request: HttpRequest):
+        Income.objects.filter(user=self.user).all().delete()
+        self.income=None
+        return render(request, self.template_name, self.get_base_context())
 
 
 
