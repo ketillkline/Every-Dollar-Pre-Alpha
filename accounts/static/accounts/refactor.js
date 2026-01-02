@@ -13,6 +13,10 @@ class BillManager {
             editingRow: null,
             editElements: []
         }
+
+        this.submitActions = ["delete_bill", "save_edited_bill", "add_income",
+            "clear_all_incomes", "add_bill"];
+
         this.form = this.elements.table.closest("form");
 
     }
@@ -74,7 +78,7 @@ class BillManager {
 
     addingUI(){
         this.updateUI(this.elements.incomeSubmitButton, "hide");
-        this.updateUI(this.table.addButton, "hide");
+        this.updateUI(this.elements.addButton, "hide");
     }
 
     editingUI(){
@@ -91,8 +95,8 @@ class BillManager {
             if (!element) continue;
             this.updateUI(element, "show");
         }
-        if (this.table.editElements){
-            for (const element in this.table.editElements){
+        if (this.elements.editElements){
+            for (const element of this.elements.editElements){
                 this.updateUI(element, "show");
             }
         }
@@ -120,7 +124,7 @@ class BillManager {
             if (value > 31) paydayInput.value = 31;
             if (value < 1) paydayInput.value = 1;
         });
-        this.table.tbody.appendChild(row);
+        this.elements.tbody.appendChild(row);
 
         const cancelButton = row.querySelector(".cancel-bill");
 
@@ -133,7 +137,7 @@ class BillManager {
 
     editBill(old_info, row) {
         this.changeState("EDITING");
-        this.table.editingRow = row;
+        this.elements.editingRow = row;
 
         const oldHTML = row.innerHTML;
 
@@ -152,15 +156,32 @@ class BillManager {
         const cancelButton = row.querySelector(".cancel_edits_button");
         cancelButton.addEventListener("click", () => {
             row.innerHTML = oldHTML;
-            this.table.editElements = Array.from(row.querySelectorAll(".edit_bill_trigger, .delete_button"));
+            this.elements.editElements = Array.from(row.querySelectorAll(".edit_bill_trigger, .delete_button"));
             this.changeState("IDLE");
-            this.table.editElements = [];
+            this.elements.editElements = [];
         });
     }
 
     handleSubmit(event){
         const action = event.submitter?.value;
+        switch (action){
+            case "save_edited_bill":
+                return this.saveEditedBill();
+            case "add_bill":
+                return this.saveNewBill();
+            default:
+                return;
+        }
+    }
 
+    saveEditedBill(){
+        const activeRow = this.editingRow;
+        if (!activeRow) return;
+    }
+
+    saveNewBill(){
+        const activeRow = this.elements.tbody.querySelector("tr:last-child");
+        if (!activeRow) return;
     }
 
 }

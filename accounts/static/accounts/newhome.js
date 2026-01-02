@@ -1,108 +1,53 @@
 class BillManager {
-    constructor() {
-        this.validStates = ["IDLE", "ADDING", "EDITING"];
-        this.state = {
-            mode: "IDLE"
-        };
+    constructor(){
+        this.table = document.getElementById("bills-table");
+        this.form = this.table.closest("form");
 
-        this.elements = {
-            addButton: document.getElementById("bill_trigger"),
-            incomeSubmitButton: document.getElementById("income_submit_button"),
-            table: document.getElementById("bills-table"),
-            tbody: document.querySelector(".bills-body"),
-            editingRow: null,
-            editElements: []
-        }
-        this.form = this.elements.table.closest("form");
+        this.addButton = document.getElementById("bill_trigger");
+        this.editButton = null;
+        this.updateUI(this.addButton, "show");
+        this.editingRow = null;
 
+        this.tbody = document.querySelector(".bills-body");
+        this.setupEvents();
     }
-
-    setupEvents(){
-        this.elements.addButton.addEventListener("click", () => {
-            this.addBill();
-        });
-
-        this.elements.table.addEventListener("click", (e) => {
+    setupEvents() {
+        this.addButton.addEventListener("click", () => {
+            this.addBillRow();
+        })
+        this.table.addEventListener("click", (e) => {
             if (e.target.classList.contains("edit_bill_trigger")){
                 const row = e.target.closest("tr");
 
-                const old_info = [
-                    row.dataset.name, row.dataset.amount, row.dataset.payday,
-                    row.dataset.id
-                ];
+            const old_info = [ // name, amount, payday
+                row.dataset.name, row.dataset.amount, row.dataset.payday,
+                row.dataset.id];
 
-                const editButton = e.target.closest(".edit_button_trigger");
-                const deleteButton = e.target.closest(".delete_button");
-                this.elements.editElements.push(editButton, deleteButton);
-                this.editBill(elements, old_info, row);
+            const editButton = e.target.closest(".edit_bill_trigger");
+            const deleteButton = row.querySelector(".delete_button");
+            const elements = [editButton, deleteButton];
+            this.editBillRow(elements, old_info, row);
             }
-            this.form.addEventListener("submit", (e) => {
-                this.handleSubmit(e);
-            });
+        });
+        this.form.addEventListener("submit", (e) => {
+            this.handleSubmit(e);
         });
     }
 
-    changeState(state){
-        if (!this.validStates.includes(state)){
-            throw new Error(`Invalid state: ${state}.`);
+    updateUI(element, action) {
+        if (action == "show") {
+            element.hidden = false;
+        } else if (action == "hide"){
+            element.hidden = true;
         }
-        this.state.mode = state;
-        switch (this.state.mode){
-            case "IDLE":
-                return this.idleUI();
-            case "ADDING":
-                return this.addingUI();
-            case "EDITING":
-                return this.editingUI();
-        }
-    }
 
-    updateUI(element, action){
-        switch (action){
-            case "show":
-                element.hidden = false;
-                break;
-            case "hide":
-                element.hidden = true;
-                break;
-            default:
-                throw new Error(`Error: Action '${action}' not valid.`);
-                break;
-        }
 
     }
 
-    addingUI(){
-        this.updateUI(this.elements.incomeSubmitButton, "hide");
-        this.updateUI(this.elements.addButton, "hide");
-    }
 
-    editingUI(){
-        this.updateUI(this.elements.addButton, "hide");
-        this.updateUI(this.elements.incomeSubmitButton, "hide");
-        for (const element in this.table.editElements){
-            this.updateUI(element, "hide");
-        }
-
-    }
-
-    idleUI(){
-        for (const element of Object.values(this.elements)){
-            if (!element) continue;
-            this.updateUI(element, "show");
-        }
-        if (this.elements.editElements){
-            for (const element of this.elements.editElements){
-                this.updateUI(element, "show");
-            }
-        }
-    }
-
-    addBill(){
-        this.changeState("ADDING");
-
-        const row = document.createElement("tr");
-
+    addBillRow(){
+        this.updateUI(this.addButton, "hide");
+        const row = document.createElement("tr")
         row.innerHTML = `
         <td><input type="text" name="bill_name" placeholder="Name"></td>
         <td><input type="number" name="bill_amount" placeholder="Amount"></td>
@@ -111,8 +56,7 @@ class BillManager {
             <button type="submit" name="action" value="add_bill">Save</button>
             <button type="button" class="cancel-bill">Cancel</button>
         </td>
-        `;
-
+        `
         const paydayInput = row.querySelector('[name="bill_pay_day"]');
         paydayInput.addEventListener("input", () => {
             const value = Number(paydayInput.value);
@@ -120,22 +64,27 @@ class BillManager {
             if (value > 31) paydayInput.value = 31;
             if (value < 1) paydayInput.value = 1;
         });
-        this.elements.tbody.appendChild(row);
+
+
+        this.tbody.appendChild(row);
 
         const cancelButton = row.querySelector(".cancel-bill");
 
         cancelButton.addEventListener("click", () => {
             row.remove();
-            this.changeState("IDLE");
-        });
-
+            this.updateUI(this.addButton, "show");
+        })
     }
 
-    editBill(old_info, row) {
-        this.changeState("EDITING");
-        this.elements.editingRow = row;
 
-        const oldHTML = row.innerHTML;
+    editBillRow(elements, old_info, row) {
+        this.editingRow = row;
+        this.updateUI(this.addButton, "hide");
+        for (const element of elements){
+            this.updateUI(element, "hide");
+        }
+
+        const originalHTML = row.innerHTML;
 
         row.innerHTML =
        `
@@ -151,21 +100,71 @@ class BillManager {
 
         const cancelButton = row.querySelector(".cancel_edits_button");
         cancelButton.addEventListener("click", () => {
-            row.innerHTML = oldHTML;
-            this.elements.editElements = Array.from(row.querySelectorAll(".edit_bill_trigger, .delete_button"));
-            this.changeState("IDLE");
-            this.elements.editElements = [];
+            row.innerHTML = originalHTML;
+            elements = row.querySelectorAll(".delete_button, .edit_bill_trigger");
+            this.updateUI(this.addButton, "show");
+            for (const element of elements){
+                this.updateUI(element, "show");
+            }
+
         });
+
+
     }
 
-    handleSubmit(event){
-        const action = event.submitter?.value;
-        if (action == "delete_bill") return;
+    handleSubmit(e){
+        const action = e.submitter?.value;
+        if (action == "delete_bill"){
+            return;
+        }
 
+        // ternary operator
         const activeRow =
             action == "save_edited_bill"
-            ? this.editingRow
-            : this.elements.tbody.querySelector("tr:last-child");
-    }
+                ? this.editingRow
 
+                : this.tbody.querySelector("tr:last-child");
+
+        if (!activeRow) return;
+
+        if (action == "save_edited_bill"){
+
+            const nameInput = activeRow.querySelector('[name="edited_bill_name"]');
+            const amountInput = activeRow.querySelector('[name="edited_bill_amount"]');
+            const paydayInput = activeRow.querySelector('[name="edited_bill_payday"]');
+
+            const name = nameInput?.value.trim();
+            const amount = amountInput?.value.trim();
+            const payday =paydayInput?.value.trim();
+            console.log("Editing", name, amount, payday)
+
+            if (!name || !amount || !payday){
+            e.preventDefault();
+            alert("Please fill in all required fields");
+            return;
+        }
+        return;
+        }
+
+
+
+        const nameInput = activeRow.querySelector('[name="bill_name"]');
+        const amountInput = activeRow.querySelector('[name="bill_amount"]');
+        const paydayInput = activeRow.querySelector('[name="bill_pay_day"]');
+
+        const name = nameInput?.value.trim();
+        const amount = amountInput?.value.trim();
+        const payday = paydayInput?.value.trim();
+        console.log("Saving New", name, amount, payday)
+
+        if (!name || !amount || !payday){
+            e.preventDefault();
+            alert("Please fill in all required fields");
+            return;
+        }
+    }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    new BillManager();
+})
