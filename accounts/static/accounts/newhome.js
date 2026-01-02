@@ -11,18 +11,22 @@ class BillManager {
             table: document.getElementById("bills-table"),
             tbody: document.querySelector(".bills-body"),
             editingRow: null,
-            editElements: []
+            editElements: [],
+            editButtons: [],
+            deleteButtons: []
         }
 
         this.submitActions = ["delete_bill", "save_edited_bill", "add_income",
             "clear_all_incomes", "add_bill"];
 
         this.form = this.elements.table.closest("form");
+        this.setupEvents();
 
     }
 
     setupEvents(){
         this.elements.addButton.addEventListener("click", () => {
+            console.log("got to setup");
             this.addBill();
         });
 
@@ -35,10 +39,11 @@ class BillManager {
                     row.dataset.id
                 ];
 
-                const editButton = e.target.closest(".edit_button_trigger");
-                const deleteButton = e.target.closest(".delete_button");
-                this.elements.editElements.push(editButton, deleteButton);
-                this.editBill(elements, old_info, row);
+                const editButton = e.target.closest(".edit_bill_trigger");
+                const deleteButton = row.querySelector(".delete_button");
+                this.elements.editElements = [editButton, deleteButton];
+                console.log(this.elements.editElements);
+                this.editBill(old_info, row);
             }
             this.form.addEventListener("submit", (e) => {
                 this.handleSubmit(e);
@@ -77,6 +82,14 @@ class BillManager {
     }
 
     addingUI(){
+        this.elements.editButtons = Array.from(document.querySelectorAll(".edit_bill_trigger"));
+        this.elements.deleteButtons = Array.from(document.querySelectorAll(".delete_button"));
+        for (const button of this.elements.editButtons){
+            this.updateUI(button, "hide");
+        }
+        for (const button of this.elements.deleteButtons){
+            this.updateUI(button, "hide");
+        }
         this.updateUI(this.elements.incomeSubmitButton, "hide");
         this.updateUI(this.elements.addButton, "hide");
     }
@@ -84,7 +97,7 @@ class BillManager {
     editingUI(){
         this.updateUI(this.elements.addButton, "hide");
         this.updateUI(this.elements.incomeSubmitButton, "hide");
-        for (const element in this.table.editElements){
+        for (const element of this.elements.editElements){
             this.updateUI(element, "hide");
         }
 
@@ -93,17 +106,18 @@ class BillManager {
     idleUI(){
         for (const element of Object.values(this.elements)){
             if (!element) continue;
-            this.updateUI(element, "show");
-        }
-        if (this.elements.editElements){
-            for (const element of this.elements.editElements){
-                this.updateUI(element, "show");
+            if (Array.isArray(element)){
+                for (const subElement of element){
+                    this.updateUI(subElement, "show");
+                }
             }
+            this.updateUI(element, "show");
         }
     }
 
     addBill(){
         this.changeState("ADDING");
+        console.log("changed state")
 
         const row = document.createElement("tr");
 
