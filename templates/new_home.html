@@ -15,12 +15,12 @@
         {% if errors %}
             {% for error in errors %}
                 <li style="color:red;">
-                    Income Error: {{ error }}
+                    {{ error }}
                 </li>
             {% endfor %}
         {% endif %}
     </div>
-    <form method="POST">
+    <form method="POST" id="income_submit_form">
         {% csrf_token %}
         <div class="paycheck-box">
                 <div class="field">
@@ -52,7 +52,7 @@
             </div>
     </form>
 
-    <form method="POST">
+    <form method="POST" id="bills_submit_form">
         {% csrf_token %}
         <div class="bills-container">
                 <table border="1" id="bills-table" class="bills-table">

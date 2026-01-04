@@ -19,14 +19,16 @@ class BillManager {
         this.submitActions = ["delete_bill", "save_edited_bill", "add_income",
             "clear_all_incomes", "add_bill"];
 
-        this.form = this.elements.table.closest("form");
+        this.forms = {
+            income: document.getElementById("income_submit_form"),
+            bills: document.getElementById("bills_submit_form")
+        }
         this.setupEvents();
 
     }
 
     setupEvents(){
         this.elements.addButton.addEventListener("click", () => {
-
             this.addBill();
         });
 
@@ -45,10 +47,15 @@ class BillManager {
 
                 this.editBill(old_info, row);
             }
-            this.form.addEventListener("submit", (e) => {
-                this.handleSubmit(e);
-            });
         });
+
+        this.forms.income.addEventListener("submit", (e) => {
+            this.handleSubmit(e);
+        });
+
+        this.forms.bills.addEventListener("submt", (e) => {
+            this.handleSubmit(e);
+        })
     }
 
     changeState(state){
@@ -191,13 +198,16 @@ class BillManager {
 
     handleSubmit(event){
         const action = event.submitter?.value;
+        const form = event.target;
+        console.log(action);
         switch (action){
             case "save_edited_bill":
+                console.log("saving edited");
                 return this.saveEditedBill(event);
             case "add_bill":
+                console.log("Adding bill");
                 return this.saveNewBill(event);
             case "add_income":
-                console.error("Choosing add income");
                 return this.addIncome(event);
             default:
                 return;
@@ -216,7 +226,7 @@ class BillManager {
         const amount = amountInput?.value.trim();
         const payday =paydayInput?.value.trim();
 
-        if (!name || !amount || !payday){
+        if (!name.value.trim() || !amount.value.trim() || !payday.value.trim()){
             e.preventDefault();
             alert("Please fill in all required fields");
             return;
@@ -236,7 +246,7 @@ class BillManager {
         const payday = paydayInput?.value.trim();
 
 
-        if (!name || !amount || !payday){
+        if (!name.value.trim() || !amount.value.trim() || !payday.value.trim()){
             e.preventDefault();
             alert("Please fill in all required fields");
             return;
@@ -244,17 +254,14 @@ class BillManager {
     }
 
     addIncome(e){
-        income_field = document.getElementById("paycheck");
-        start_date = document.getElementById("start_date");
-        end_date = document.getElementById("end_date");
-        if (!income_field || !start_date || !end_date){
+        const income_field = document.getElementById("paycheck");
+        const start_date = document.getElementById("start_date");
+        const end_date = document.getElementById("end_date");
+        if (!income_field.value.trim() || !start_date.value.trim() || !end_date.value.trim()){
             e.preventDefault();
             alert("Please fill in all required fields");
             return;
-        } else{
-
         }
-
     }
 }
 
