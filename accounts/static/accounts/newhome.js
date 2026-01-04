@@ -193,15 +193,18 @@ class BillManager {
         const action = event.submitter?.value;
         switch (action){
             case "save_edited_bill":
-                return this.saveEditedBill();
+                return this.saveEditedBill(event);
             case "add_bill":
-                return this.saveNewBill();
+                return this.saveNewBill(event);
+            case "add_income":
+                console.error("Choosing add income");
+                return this.addIncome(event);
             default:
                 return;
         }
     }
 
-    saveEditedBill(){
+    saveEditedBill(e){
         const activeRow = this.editingRow;
         if (!activeRow) return;
 
@@ -220,7 +223,7 @@ class BillManager {
         }
     }
 
-    saveNewBill(){
+    saveNewBill(e){
         const activeRow = this.elements.tbody.querySelector("tr:last-child");
         if (!activeRow) return;
 
@@ -238,6 +241,20 @@ class BillManager {
             alert("Please fill in all required fields");
             return;
         }
+    }
+
+    addIncome(e){
+        income_field = document.getElementById("paycheck");
+        start_date = document.getElementById("start_date");
+        end_date = document.getElementById("end_date");
+        if (!income_field || !start_date || !end_date){
+            e.preventDefault();
+            alert("Please fill in all required fields");
+            return;
+        } else{
+
+        }
+
     }
 }
 
