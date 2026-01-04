@@ -208,6 +208,7 @@ class BillManager {
 
                 return this.saveNewBill(event);
             case "add_income":
+                event.preventDefault();
                 return this.addIncome(event);
             default:
                 return;
@@ -217,7 +218,7 @@ class BillManager {
     saveEditedBill(e){
 
         const activeRow = e.submitter.closest("tr");
-        console.log(activeRow);
+
         if (!activeRow) return;
 
         const nameInput = activeRow.querySelector('[name="edited_bill_name"]');

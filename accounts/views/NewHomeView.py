@@ -95,12 +95,10 @@ class NewHomeView(View):
         pay_day = request.POST.get("edited_bill_payday")
 
         edited_fields = {"name": name, "amount": amount, "pay_day": pay_day}
-
+        print(dict(request.POST))
         for field, value in edited_fields.items():
             setattr(target_bill, field, value)
         target_bill.save()
-
-
 
         return render(request, self.template_name, self.get_base_context())
 
