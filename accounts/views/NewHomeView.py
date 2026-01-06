@@ -5,6 +5,7 @@ from accounts.static.accounts.database import Bill, Income
 from django.db.models import Sum
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime, date, timedelta
+import calendar
 
 class NewHomeView(View):
     def dispatch(self, request, *args, **kwargs):
@@ -56,6 +57,8 @@ class NewHomeView(View):
             return render(request, self.template_name, {"errors": self.errors,
                                                         **self.get_base_context()})
 
+        self.is_due(list(Bill.objects.filter(user=self.user)), self.income.start_date, self.income.end_date)
+
         new_bill = Bill.objects.create(**fields, user=self.user)
         return render(request, self.template_name, self.get_base_context())
 
@@ -84,6 +87,7 @@ class NewHomeView(View):
         self.is_due(list(Bill.objects.filter(user=self.user)), start_date, end_date)
         new_income = Income.objects.create(**fields, user=self.user)
         self.income = new_income
+
         context = self.get_base_context()
 
 
@@ -103,11 +107,14 @@ class NewHomeView(View):
         for field, value in edited_fields.items():
             setattr(target_bill, field, value)
         target_bill.save()
+        self.is_due(list(Bill.objects.filter(user=self.user)), self.income.start_date, self.income.end_date)
 
         return render(request, self.template_name, self.get_base_context())
 
     def get_date_object(self, date: str):
-        return datetime.strptime(date, "%Y-%m-%d").date()
+        if type(date) == str:
+            return datetime.strptime(date, "%Y-%m-%d").date()
+        return date
 
     def get_pay_period(self, start_date, end_date):
         if type(start_date) == str and type(end_date) == str:
@@ -133,7 +140,7 @@ class NewHomeView(View):
             "income": income,
             "pay_period_days": pay_period_days,
             "due_emoji": "✅",
-            "due": True
+            "due": True,
 
 
         }
@@ -146,11 +153,17 @@ class NewHomeView(View):
         start_day = self.get_date_object(start_date).day
         end_day = self.get_date_object(end_date).day
         for bill in bills:
+            self.payday_to_date(start_date.month, bill.pay_day, start_date.year)
             if start_day <= int(bill.pay_day) <= end_day:
                 bill.due = True
             else:
                 bill.due = False
             bill.save()
+
+    def payday_to_date(self, month, pay_day, year):
+
+
+
 
 
 
