@@ -1,13 +1,12 @@
 // STATIC DATA //
 
-const paycheck_amount = document.getElementById("paycheck_amount").value;
+const paycheck_amount =  parseFloat(
+    document.getElementById("paycheck_amount")?.value || 0
+    );
+
 const bills = document.getElementById("total_bills")
-let bills_amount;
-if (!bills){
-    bills_amount = 0;
-} else {
-    bills_amount = bills.value;
-}
+let bills_amount = bills ? parseFloat(bills.value) : 0;
+
 
 // DYNAMICS
 
@@ -27,7 +26,7 @@ wheel.style.setProperty("--free-deg", "360deg")
 const tooltip = document.getElementById("wheel-tooltip");
 
 const expenseZone = document.querySelector(".hover-zone.expenses");
-const remainingZone = document.querySelector(".hover-zone-remaining");
+const remainingZone = document.querySelector(".hover-zone.remaining");
 
 function showTooltip(text, event){
     tooltip.textContent = text;
@@ -41,11 +40,11 @@ function hideTooltip(){
 }
 
 expenseZone.addEventListener("mousemove", (e) => {
-    showTooltip(`Expenses: $${bills}`, e);
+    showTooltip(`Expenses: $${bills_amount.toFixed(2)}`, e);
 });
 
 remainingZone.addEventListener("mousemove", (e) => {
-    showTooltip(`Remaining: $${paycheck_amount}`, e);
+    showTooltip(`Remaining: $${free_amount.toFixed(2)}`, e);
 });
 
 expenseZone.addEventListener("mouseleave", hideTooltip);
