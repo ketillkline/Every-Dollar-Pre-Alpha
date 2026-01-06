@@ -3,44 +3,30 @@ My take on a budgeting app, orginating from my present need to get my own financ
 application is being built using Python 3.11, Django, and HTML in PyCharm on Windows 11. Includes data persistance and
 authentication
 
-# ✨ In-Scope Project Feature Checklist
+# In-Scope by Version
+The following is the features that are In-Scope for each version of Every Dollar Budgeting
 
-## Income Management
-- [x] Add paycheck
-- [x] Add start and end date
-- [] Calculate frequency automatically
+## Version 1.0
+### 💰 Income Submission and Management 💰
+- Submit an income 
+- Submit a start and end date for that income
+- Clear all incomes
+### 💸 Bill Management 💸
+- Add bills with the following fields: name, amount, and pay day
+- Delete Bills
+- Edit existing bills
+### 👀 Leftover Money Calculation 👀
+- Wheel visualization of leftover and spent money
 
-## Leftover Money
-- [x] Add progress bar to show leftover money
-- [] Add popup to add expense and take away money
-- [] Add hover option that shows leftover money on money wheel
+## Version 1.x 🚀
+- Improved UI and UX interactions
+- Adding one-time expenses
+- Custom categories for expenses
 
-## Bill Management
-- [x] Add Bills with Name, Amount, and Pay Day
-- [x] Dynamic "Add new" button with "+"
-
-## Saving & Spending Allocations
-- [] Add aggressiveness slider bar that changes color and displays aggressiveness
-- [] Show user what they'll save
-- [] Show user what they can spend
-
-## Transaction History
-- [] Add separate page that tracks expenses with name, value, category, and date
-- [] Allow user to predefine custom categories dynamically
-
-# 🤯 Out-Scope Feature Checklist
-- [] Tax APIs
-- [] Banking APIs
-
-
-# What is "aggressiveness"?
-Allows the user to control how aggressively they want to save based on their goals. After taking out
-money for the appropriate expenses, the aggressiveness factor chosen will determine how much of the 
-remaining money will be saved and how much can be spent.
-- Moderately = 70% saved 😄
-- Aggressive = 80% saved 🔥
-- Insane = 90% saved 🤑
-- Everything = 100% saved ☠️
+## Version 2.0 🚀
+- Aggressiveness
+- Savings aggressiveness slider
+- Spending v.s. Saving modeling
 
 # Project Status
 As of December 22, 2025, Every Dollar Budgeting has moved into its Alpha
