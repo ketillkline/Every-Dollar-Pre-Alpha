@@ -128,7 +128,7 @@ class HomeView(View):
     def get_base_context(self):
         bills = Bill.objects.filter(user=self.user).all().order_by("-due", "-amount" ,"pay_day")
         total_bills = Bill.objects.aggregate(total=Sum("amount"))
-        self.income = Income.objects.filter(user=self.user).first()
+        self.income = Income.objects.filter(user=self.user).latest("start_date")
         if not self.income:
             self.is_due(bills, None, None)
             income = None
@@ -157,7 +157,6 @@ class HomeView(View):
         if not start_date or not end_date:
             for bill in bills:
                 bill.due = False
-
             return
         start_date = self.get_date_object(start_date)
         end_date = self.get_date_object(end_date)

@@ -11,6 +11,15 @@
 <body>
 
 <div class="container">
+    <div class="errors">
+        {% if errors %}
+            {% for error in errors %}
+                <li style="color:red;">
+                    {{ error }}
+                </li>
+            {% endfor %}
+        {% endif %}
+    </div>
     <form method="POST" id="income_submit_form">
         {% csrf_token %}
         <div class="paycheck-box">
@@ -42,15 +51,6 @@
                     <p>{{ month }}</p>
                 </div>
             </div>
-        <div class="errors">
-            {% if errors %}
-                {% for error in errors %}
-                    <li style="color:red;">
-                        {{ error }}
-                    </li>
-                {% endfor %}
-            {% endif %}
-        </div>
     </form>
 
     <form method="POST" id="bills_submit_form">
@@ -114,116 +114,6 @@
 
 
 
-</div>
-
-
-<div class="page">
-    <section class="income-section">
-        <div class="income-wrapper">
-            <div class="income-errors">
-                {% if errors %}
-                {% for error in errors %}
-                    <li style="color:red;">
-                        {{ error }}
-                    </li>
-                {% endfor %}
-            {% endif %}
-            </div>
-            <form method="POST" id="income_submit_form">
-                {% csrf_token %}
-                <div class="paycheck-box">
-                    <div class="field">
-                        <label for="paycheck">Paycheck</label><br>
-                        <input type="number" step="any" name="paycheck" id="paycheck" value="{{ income.amount }}">
-                        <input type="hidden" name="paycheck_amount" id="paycheck_amount" value="{{ income.amount }}">
-                    </div>
-
-                    <div class="field">
-                        <label for="start-date">Start</label><br>
-                        <input type="date" name="start_date" id="start_date" value="{{ income.start_date|date:'Y-m-d' }}">
-                    </div>
-
-                    <div class="field">
-                       <label for="end-date">Until</label><br>
-                        <input type="date" name="end_date" id="end_date" value="{{ income.end_date|date:'Y-m-d' }}">
-                    </div>
-
-                    <div class="buttons-group">
-                        <button type="submit" name="action" value="add_income" id="income_submit_button">Submit</button>
-                        <button type="submit" name="action" value="clear_all_incomes">Clear All</button>
-                    </div>
-
-                    <div class="pay_period_days">
-                        {% if pay_period_days %}
-                        <p>{{ pay_period_days }}</p>
-                        {% endif %}
-                        <p>{{ month }}</p>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </section>
-
-    <section class="bottom-section">
-        <div class="bills-section">
-            <div class="bill-errors">
-
-            </div>
-            <form method="POST" id="bills_submit_form">
-                {% csrf_token %}
-                <input type="hidden" name="total_bills" id="total_bills" value="{{ total_bills }}">
-                <input type="hidden" name="bill_id" id="bill_id" value="">
-                <div class="bills-container">
-                    <table border="1" id="bills-table" class="bills-table">
-                        <tr>
-                            <th>Name</th>
-                            <th>Amount</th>
-                            <th>Pay Day</th>
-                            <th>Buttons</th>
-                        </tr>
-
-                        <tbody class="bills-body">
-                            {% for bill in bills %}
-                            <!-- This is how the backend knows which bill to edit -->
-                            <tr class="bill-row" data-id="{{ bill.id }}"
-                            data-name="{{ bill.name }}"
-                            data-amount="{{ bill.amount }}"
-                            data-payday="{{ bill.pay_day }}"
-                            >
-                                <td>{% if bill.due %} {{ due_emoji }} {% endif %}{{ bill.name }}</td>
-                                <td>{{ bill.amount }}</td>
-                                <td>{{ bill.pay_day }}</td>
-                                <td>
-                                    <button type="button" class="edit_bill_trigger">Edit</button>
-                                    <button type="submit" class="delete_button" name="action"
-                                            value="delete_bill">Delete</button>
-
-
-                                </td>
-                            </tr>
-                            {% endfor %}
-                            <tr id="add-row">
-                                <td colspan="4">
-                                    <button type="button" id="bill_trigger">+ Add New Bill</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-    </form>
-        </div>
-
-        <div class="wheel-section">
-            <div id="money-wheel-container">
-                <div id="money-wheel"></div>
-
-                <div class="hover-zone expenses"></div>
-                <div class="hover-zone remaining"></div>
-
-                <div class="tooltip" id="wheel-tooltip"></div>
-            </div>
-        </div>
-    </section>
 </div>
     <script src="{% static 'accounts/wheel.js'  %}"></script>
     <script src="{% static 'accounts/newhome.js' %}"></script>
