@@ -223,6 +223,7 @@ html, body {
 }
 
 .wheel-wrapper {
+    position: relative;
     margin-top: auto;
     margin-bottom: auto;
     width: 325px;
@@ -240,7 +241,7 @@ html, body {
 }
 
 .hover-zone.expenses{
-    right:0;
+    left: 50%;
 }
 
 .hover-zone.remaining{

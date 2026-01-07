@@ -28,6 +28,7 @@ const remainingZone = document.querySelector(".hover-zone.remaining");
 
 const tooltip = document.getElementById("wheel-tooltip");
 const container = document.getElementById("money-wheel-container");
+const wrapper = document.querySelector(".wheel-wrapper");
 
 function showTooltip(text, e) {
   tooltip.textContent = text;
@@ -35,12 +36,8 @@ function showTooltip(text, e) {
   const padding = 8;
   const rect = container.getBoundingClientRect();
 
-  // cursor position relative to the container
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-
-  tooltip.style.left = (x + padding) + "px";
-  tooltip.style.top  = (y + padding) + "px";
+  tooltip.style.left = (e.clientX - rect.left + padding) + "px";
+  tooltip.style.top  = (e.clientY - rect.top  + padding) + "px";
   tooltip.style.opacity = 1;
 }
 
@@ -48,14 +45,28 @@ function hideTooltip() {
   tooltip.style.opacity = 0;
 }
 
-expenseZone.addEventListener("mousemove", (e) => {
-  showTooltip(`Expenses: $${bills_amount.toFixed(2)}`, e);
+wrapper.addEventListener("mousemove", (e) => {
+  const r = wrapper.getBoundingClientRect();
+
+  const x = e.clientX - r.left;
+  const y = e.clientY - r.top;
+
+  const radius = r.width / 2;
+  const dx = x - radius;
+  const dy = y - radius;
+
+  // If cursor is outside the circle, do nothing
+  if (dx * dx + dy * dy > radius * radius) {
+    hideTooltip();
+    return;
+  }
+
+  // Inside circle: left half = remaining, right half = expenses
+  if (x < radius) {
+    showTooltip(`Remaining: $${free_amount.toFixed(2)}`, e);
+  } else {
+    showTooltip(`Expenses: $${bills_amount.toFixed(2)}`, e);
+  }
 });
-remainingZone.addEventListener("mousemove", (e) => {
-  showTooltip(`Remaining: $${free_amount.toFixed(2)}`, e);
-});
 
-expenseZone.addEventListener("mouseleave", hideTooltip);
-remainingZone.addEventListener("mouseleave", hideTooltip);
-
-
+wrapper.addEventListener("mouseleave", hideTooltip);
