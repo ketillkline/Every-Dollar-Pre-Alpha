@@ -14,6 +14,7 @@
 <div class="page">
     <section class="income-section">
         <div class="income-wrapper">
+            <h1 class="section-header">My Earnings</h1>
             <div class="income-errors">
                 {% if errors %}
                 {% for error in errors %}
@@ -60,8 +61,8 @@
 
     <section class="bottom-section">
         <div class="bills-section">
+            <h1 class="section-header">My Bills</h1>
             <div class="bill-errors">
-
             </div>
             <form method="POST" id="bills_submit_form">
                 {% csrf_token %}
@@ -109,6 +110,7 @@
 
         <div class="wheel-section">
             <div id="money-wheel-container">
+                <h1 class="section-header">Funds Overview</h1>
                 <div id="money-wheel"></div>
 
                 <div class="hover-zone expenses"></div>
