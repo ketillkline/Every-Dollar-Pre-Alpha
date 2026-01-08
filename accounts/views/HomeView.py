@@ -128,7 +128,7 @@ class HomeView(View):
     def get_base_context(self):
         bills = Bill.objects.filter(user=self.user).all().order_by("-due", "-amount" ,"pay_day")
         total_bills = Bill.objects.aggregate(total=Sum("amount"))
-        self.income = Income.objects.filter(user=self.user).latest("start_date")
+        self.income = Income.objects.filter(user=self.user).first()
         if not self.income:
             self.is_due(bills, None, None)
             income = None
