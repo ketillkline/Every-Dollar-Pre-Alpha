@@ -1,6 +1,4 @@
-from .conftest import page, test_user
-
-url = "http://127.0.0.1:8000/"
+from .conftest import page, test_user, url
 
 def test_auth_page_loads(page, live_server):
     page.goto(url + "login/")
@@ -32,4 +30,6 @@ def test_wrong_credentials(page, test_user):
     page.click("button[type='submit']")
 
     assert "login" in page.url
+
+
 

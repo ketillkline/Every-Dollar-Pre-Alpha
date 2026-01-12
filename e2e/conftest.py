@@ -3,6 +3,7 @@ import os
 from playwright.sync_api import sync_playwright
 from django.contrib.auth.models import User
 
+url = "http://127.0.0.1:8000/"
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 
 @pytest.fixture(scope="session")
