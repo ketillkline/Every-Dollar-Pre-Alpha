@@ -15,7 +15,7 @@ class HomeView(View):
         self.template_name = "home.html"
         self.request = request
         try:
-            self.income = Income.objects.filter(user=self.user).latest("start_date")
+            self.income = Income.objects.filter(user=self.user).first()
         except ObjectDoesNotExist:
             self.income = None
 

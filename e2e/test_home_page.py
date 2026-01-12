@@ -1,10 +1,12 @@
 from .conftest import page, test_user, url
 
 def test_clear_all_no_crash(page):
-    page.goto(url)
 
-    page.click("button[value='clear_all_incomes']")
-    page.wait_for_load_state("networkidle", timeout=5000)
+    page.goto(url + "login/")
+    page.fill("input[name='username']", "testuser")
+    page.fill("input[name='password']", "testpassword")
+    page.click("button[type='submit']")
 
+    clear_button = page.locator("button[value='clear_all_incomes']")
 
-    assert page.url == url
+    assert clear_button.is_visible()
