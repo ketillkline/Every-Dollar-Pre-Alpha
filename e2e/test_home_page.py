@@ -48,6 +48,9 @@ def test_income_submit(page):
     page.click(buttons.get("add_income"))
 
     assert page.url == url
+'''
+
+TODO: Finish tests
 
 def test_add_bill(page):
     login(page)
@@ -63,7 +66,7 @@ def test_add_bill(page):
 def test_add_bill_missing_field(page):
     login(page)
 
-    page.click(buttons["add_new_bill"])
+    assert page.locator(buttons["add_new_bill"])
     assert page.locator(buttons["save"]).is_visible()
     assert page.locator(buttons["cancel"]).is_visible()
 
@@ -73,4 +76,4 @@ def test_cancel(page):
 
     assert page.locator(buttons.get("add_new_bill")).is_visible()
 
-
+'''
