@@ -8,6 +8,6 @@ build:
       - pip install -r requirements.txt
 
 run:
-  command: gunicorn ebdjango.wsgi:application --bind 0.0.0.0:8080
+  command: gunicorn SimpleBudget.wsgi:application --bind 0.0.0.0:8080
   network:
     port: 8080
