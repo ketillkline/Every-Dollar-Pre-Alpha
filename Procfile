@@ -1,1 +1,1 @@
-web: gunicorn simplebudget.wsgi:application
+web: gunicorn SimpleBudget.wsgi:application
