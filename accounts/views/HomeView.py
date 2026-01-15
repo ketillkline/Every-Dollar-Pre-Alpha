@@ -119,7 +119,7 @@ class HomeView(LoginRequiredMixin, View):
 
     def get_base_context(self, request: HttpRequest):
         bills = Bill.objects.filter(user=request.user).all().order_by("-due", "-amount" ,"pay_day")
-        total_bills = Bill.objects.aggregate(total=Sum("amount"))
+        total_bills = Bill.objects.filter(user=request.user).aggregate(total=Sum("amount"))
         income = self.get_income(request)
         if not income:
             self.is_due(bills, None, None)
