@@ -29,7 +29,7 @@ The following is the features that are In-Scope for each version of Every Dollar
 - Spending v.s. Saving modeling
 
 # Project Status
-As of December 22, 2025, Every Dollar Budgeting has moved into its Alpha
+As of January 15th, 2025, this project has been put on hold after its first deployment on Render
 
 # Project Background
 This is my second official project using Django. My first was the Symbol Authentication application,
